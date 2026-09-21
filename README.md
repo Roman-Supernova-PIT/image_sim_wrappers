@@ -37,7 +37,7 @@
 7. When all romancal jobs are done, make grand summary with **./RUN3_SUMMARY.sh**
 
 8. If all looks good, clean up some of the mess by creating BACKUP*tar files
-   using **./RUN4_CLEAN.sh **
+   using **./RUN4_CLEAN.sh**
 
 ## Wrapper Descriptions:
 

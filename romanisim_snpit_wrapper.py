@@ -203,6 +203,8 @@ def print_config_HELP():
       BANDS:     R  Z*4 Y J H F/4  
       NODES:     mem-med   
       WALLTIME:  "4:00:00"
+      IMAGE_SIM_WRAPPERS_DIR:  <local dir for https://github.com/Roman-Supernova-PIT/image_sim_wrappers>
+
   
     # ---------------------------------------------------
     # keys for romanisim_snpit_wrapper.py
@@ -244,8 +246,21 @@ def print_config_HELP():
     - 61890 61980   # CORE 
     - 61499 61531   # PILOT
 
-    # NMJD_PROCESS: 1  # use this for quick/debug outputs
+    # - - - - - - -
+    # options
 
+    # process only the first MJD on list; for quick/debug outputs
+    # NMJD_PROCESS: 1 
+
+    # force override of TEXPOSE from SNANA transient catalog
+    FORCE_TEXPOSE:
+      R: 60
+      Z: 60
+      Y: 60
+      J: 60
+      H: 60
+      F: 60
+    
     """
 
     print(f"{msg}")
@@ -1178,12 +1193,7 @@ def parse_texpoe_ma_map(args, config):
     with open(ma_file) as f:
         ma_dict = yaml.safe_load(f.read())['MA_DICT']
 
-    # - - -
-    #ma = get_ma_number(87.0,  ma_dict, True)
-    #ma = get_ma_number(433.0, ma_dict, True)
-    #ma = get_ma_number(748, ma_dict, True)
-    #sys.exit(f"\n xxx DEBUG STOP \n xxx ma_dict = \n{ma_dict}")
-    
+    # - - -    
     return ma_dict
 
 
@@ -1261,9 +1271,17 @@ def get_pointing_info(args, config, cat, check_pointing_dict, vbose):
     return ra, dec, roll
 
 
-def get_texpose_transient(cat):
-    texpose_list = cat['TEXPOSE'].tolist()
-    texpose      = next((x for x in texpose_list if isinstance(x, float)), None)    
+def get_texpose_transient(args, config, cat):
+
+    # check for forced TEXPOSE override in use config
+    if 'FORCE_TEXPOSE' in config:
+        FORCE_TEXPOSE_DICT = config['FORCE_TEXPOSE']
+        texpose = FORCE_TEXPOSE_DICT[args.band_snana]
+    else:
+        # default is to fetch TEXPOSE from transient catalot
+        texpose_list = cat['TEXPOSE'].tolist()
+        texpose      = next((x for x in texpose_list if isinstance(x, float)), None)
+        
     return texpose
 
 def get_ma_number(texpose, ma_dict, vbose):
@@ -1446,7 +1464,7 @@ if __name__ == "__main__":
                     cat_dict[genv] = temp_dict
                     cat_dict[genv]['label'] = LABEL_TRANSIENT
                     if texpose < 0:
-                        texpose = get_texpose_transient(cat_dict[genv])  # for optional templates below
+                        texpose = get_texpose_transient(args, config,cat_dict[genv])  # for optional templates below
                                 
             print_banner('# ============== DONE with SNANA TRANSIENTS ================')
             
@@ -1514,7 +1532,7 @@ if __name__ == "__main__":
             full_cat    = cat_vstack(cat_dict, mjd = mjd)
 
             if HAS_TRANSIENTS:
-                texpose  = get_texpose_transient(full_cat)
+                texpose  = get_texpose_transient(args, config,full_cat)
             else:
                 texpose  = texpose_pointing_dict[band_soc][imjd]
             

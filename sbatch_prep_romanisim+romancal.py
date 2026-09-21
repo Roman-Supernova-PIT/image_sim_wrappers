@@ -34,9 +34,10 @@ PREFIX_SBATCH_DICT = {
     TASKNAME_CAL : "run_cal"
 }
 
+
 CODE_WRAPPER_DICT = {
-    TASKNAME_SIM : f"$HOME/bin/romanisim_snpit_wrapper.py",
-    TASKNAME_CAL : f"$HOME/bin/romancal_snpit_wrapper.py",
+    TASKNAME_SIM : f"romanisim_snpit_wrapper.py",
+    TASKNAME_CAL : f"romancal_snpit_wrapper.py",
 }
 
 RUNNUM_ORDER_DICT = {
@@ -87,6 +88,9 @@ def get_args():
 
     msg = "action: cleanup by making backup tar files (after romancal finishes)"
     parser_inputs.add_argument("--clean", help=msg, action="store_true")
+
+    msg = "action: remove all run* and outputs; leave only config file (to start over) "
+    parser_inputs.add_argument("--purge", help=msg, action="store_true")    
 
     msg = "action: print info for each run* file processed"
     parser_inputs.add_argument("--verbose", help=msg, action="store_true")          
@@ -187,7 +191,9 @@ def prep_task(TASK, b, sca, SBATCH_PREP, args, i_split, i_task):
     n_split          = SBATCH_PREP['BAND_NSPLIT_DICT'][b]
     
     PREFIX      = PREFIX_SBATCH_DICT[TASK]
-    CODE        = CODE_WRAPPER_DICT[TASK]
+
+    CODE_DIR    = os.path.expandvars(SBATCH_PREP['IMAGE_SIM_WRAPPERS_DIR'])
+    CODE        = CODE_DIR + '/' + CODE_WRAPPER_DICT[TASK]
     
     b_soc       = BAND_LIST_DICT[b]        # e.g.,  b(SNANA)=R -> b_soc = F062
     sca2d       = f"{sca:02d}"
@@ -723,6 +729,23 @@ def extract_info_from_img_filename(img_file, obs_idoff):
     
     return obs_id, scanum, band
 
+def purge_driver(args, SBATCH_PREP):
+
+    purge_list = [ 'NODELIST*', 'TIMESTAMP*', 'STATUS*', 'RUN*', 'run_sim*', 'run_cal*', 'SNPIT*' ]
+
+    n_purge = 0
+    for purge in purge_list:
+        logging.info(f" Purge {purge} ... ")
+        flist = glob.glob(purge)
+        cmd   = f"rm {purge}"
+        n     = len(flist)
+        n_purge += n
+        if n > 0 :
+            os.system(cmd)
+
+    logging.info(f"Done purging {n_purge} files")
+    return
+
 def cleanup_driver(args, SBATCH_PREP):
 
     logging.info(f" CLEANUP:")
@@ -770,7 +793,10 @@ if __name__ == "__main__":
         summary_driver(args, SBATCH_PREP)
 
     elif args.clean:
-        cleanup_driver(args, SBATCH_PREP)             
+        cleanup_driver(args, SBATCH_PREP)
+
+    elif args.purge:
+        purge_driver(args, SBATCH_PREP)                     
 
     else:
         sys.exit(f"\n ERROR: no action specified. Try --prep or --status or --clean")
