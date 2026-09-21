@@ -1,9 +1,9 @@
 # image_sim_wrappers
 
-Quick-start guide with slurm (beware: tested only on SMDC)
+## Quick-start guide with slurm (beware: tested only on SMDC)
 
-1. Simulate catalog-level transients with SNANA. The SIMLIB/cadence library used
-   by SNANA should be synced with a POINTING file containing
+- Simulate catalog-level transients with SNANA. The SIMLIB/cadence library used
+  by SNANA should be synced with a POINTING file containing
       RA_WFI_CEN, DEC_WFI_CEN, ROLL
    for each visit that is identified by an image number (IMGNUM). This pointing info
    is passed to romanisim for each MJD/IMGNUM. If there is no POINTING file, you can
@@ -15,34 +15,33 @@ Quick-start guide with slurm (beware: tested only on SMDC)
    
    SNANA is not yet working on SMDC, so need to run this on another cluster
     
-2. Copy the SNANA HOSTLIB and output sim data folder to SMDC
+- Copy the SNANA HOSTLIB and output sim data folder to SMDC
 
-3. Construct input config for the roman code wrappers using help from
+- Construct input config for the roman code wrappers using help from
      romanisim_snpit_wrapper.py --HELP
 
-4. Prepare slurm jobs with
+- Prepare slurm jobs with
      sbatch_prep_romanisim+romancal.py --config_file sim_science.config --prep
         or 
      sbatch_prep_romanisim+romancal.py --c sim_science.config -p	 
 
-5. Launch romanisim jobs with  ./RUN1_ALL_SIM.sh;
+- Launch romanisim jobs with  ./RUN1_ALL_SIM.sh;
    monitor progress in STATUS_SIM.DAT, which includes WALLTIME and failure stats.
 
    Don't panic if there is no STATUS file for a while; it won't appear until at
    least one slurm task has finished.
       
-6. launch romancal with ./RUN2_ALL_CAL.sh; it will wait for RUN1_ALL_SIM.sh to finish.
+- launch romancal with ./RUN2_ALL_CAL.sh; it will wait for RUN1_ALL_SIM.sh to finish.
    Monitor status with STATUS_CAL.DAT
    
-7. When all romancal jobs are done, make grand summary with ./RUN3_SUMMARY.sh
+- When all romancal jobs are done, make grand summary with ./RUN3_SUMMARY.sh
 
-8. If all looks good, clean up some of the mess by creating BACKUP*tar files
+- If all looks good, clean up some of the mess by creating BACKUP*tar files
    using ./RUN4_CLEAN.sh
 
-# ====================================================================
-Wrapper Descriptions:
+## Wrapper Descriptions:
 
-romanisim_snpit_wrapper.py
+- romanisim_snpit_wrapper.py
    Read galaxies and transients from SNANA sim data folder, and
    read GAIA+Synthetic stars from CSV file; this input is translated
    into required astropy format for romanisim. The MJDs in the
@@ -56,14 +55,14 @@ romanisim_snpit_wrapper.py
   For help on the input config file,
        romanisim_snpit_wrapper.py --HELP
    
-romancal_snpit_wrapper.py
+- romancal_snpit_wrapper.py
   read L1 file (or wildcard for list) and runs romancal to produce
   L2 file for each L1. Beware that there is currently a sublte WCS
   problem in the L2 output, and a hacky fix is needed for campari
   and phrosty.
 
 
-sbatch_prep_romanisim+romancal.py
+- sbatch_prep_romanisim+romancal.py
   Read config file for romanisim_snpit_wrapper.py, and prepare slurm jobs
   (SMDC) for both romanisim_snpit_wrapper.py & romancal_snpit_wrapper.py.
   Also produces simple bash scripts to submit all of the jobs; see
@@ -78,5 +77,3 @@ sbatch_prep_romanisim+romancal.py
 
   For more help, see SBATCH_PREP block in  romanisim_snpit_wrapper.py --HELP
 
-
-END:
