@@ -2,7 +2,7 @@
 
 ## Quick-start guide with slurm (beware: tested only on SMDC)
 
-- Simulate catalog-level transients with SNANA. The SIMLIB/cadence library used
+1. Simulate catalog-level transients with SNANA. The SIMLIB/cadence library used
   by SNANA should be synced with a POINTING file containing\
   &nbsp;&nbsp;&nbsp;&nbsp;    RA_WFI_CEN, DEC_WFI_CEN, ROLL\
   for each visit that is identified by an image number (IMGNUM). This pointing info
@@ -15,28 +15,28 @@
    
    SNANA is not yet working on SMDC, so need to run this on another cluster
     
-- Copy the SNANA HOSTLIB and output sim data folder to SMDC
+2. Copy the SNANA HOSTLIB and output sim data folder to SMDC
 
-- Construct input config for the roman code wrappers using help from\
+3. Construct input config for the roman code wrappers using help from\
    **romanisim_snpit_wrapper.py --HELP**
 
-- Prepare slurm jobs with\
+4. Prepare slurm jobs with\
     **sbatch_prep_romanisim+romancal.py --config_file sim_science.config --prep**\
         or\
     **sbatch_prep_romanisim+romancal.py --c sim_science.config -p**\
 
-- Launch romanisim jobs with  **./RUN1_ALL_SIM.sh**\
+5. Launch romanisim jobs with  **./RUN1_ALL_SIM.sh**\
    monitor progress in STATUS_SIM.DAT, which includes WALLTIME and failure stats.
 
    Don't panic if there is no STATUS file for a while; it won't appear until at
    least one slurm task has finished.
       
-- launch romancal with **./RUN2_ALL_CAL.sh**; it will wait for RUN1_ALL_SIM.sh to finish.
+6. launch romancal with **./RUN2_ALL_CAL.sh**; it will wait for RUN1_ALL_SIM.sh to finish.
    Monitor status with STATUS_CAL.DAT
    
-- When all romancal jobs are done, make grand summary with **./RUN3_SUMMARY.sh**
+7. When all romancal jobs are done, make grand summary with **./RUN3_SUMMARY.sh**
 
-- If all looks good, clean up some of the mess by creating BACKUP*tar files
+8. If all looks good, clean up some of the mess by creating BACKUP*tar files
    using **./RUN4_CLEAN.sh **
 
 ## Wrapper Descriptions:
