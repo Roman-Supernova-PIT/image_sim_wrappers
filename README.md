@@ -4,10 +4,10 @@
 
 - Simulate catalog-level transients with SNANA. The SIMLIB/cadence library used
   by SNANA should be synced with a POINTING file containing\
-      RA_WFI_CEN, DEC_WFI_CEN, ROLL\
-   for each visit that is identified by an image number (IMGNUM). This pointing info
-   is passed to romanisim for each MJD/IMGNUM. If there is no POINTING file, you can
-   hard wire a fixed RA,DEC,ROLL in the wrapper-config file (see below).
+  &nbsp;&nbsp;&nbsp;&nbsp;    RA_WFI_CEN, DEC_WFI_CEN, ROLL
+  for each visit that is identified by an image number (IMGNUM). This pointing info
+  is passed to romanisim for each MJD/IMGNUM. If there is no POINTING file, you can
+  hard wire a fixed RA,DEC,ROLL in the wrapper-config file (see below).
 
    To simulate only stars and/or galaxies, a manually created POINTING file is
    required to define a list of MJDs, since there are no transients to define
@@ -70,8 +70,8 @@
   block of the config input for romanisim_snpit_wrapper.py.
 
   This process includes monitor process that updates\
-      STATUS_SIM.DAT\
-      STATUS_CAL.DAT\
+  &nbsp;&nbsp;&nbsp;&nbsp;    STATUS_SIM.DAT\
+  &nbsp;&nbsp;&nbsp;&nbsp;    STATUS_CAL.DAT\
   to show progress of slurm jobs.
 
   For more help, see SBATCH_PREP block in  **romanisim_snpit_wrapper.py --HELP**
