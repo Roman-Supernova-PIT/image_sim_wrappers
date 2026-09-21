@@ -25,13 +25,13 @@
         or\
     **sbatch_prep_romanisim+romancal.py --c sim_science.config -p**\
 
-- Launch romanisim jobs with  **./RUN1_ALL_SIM.sh**;\
+- Launch romanisim jobs with  **./RUN1_ALL_SIM.sh**;
    monitor progress in STATUS_SIM.DAT, which includes WALLTIME and failure stats.
 
    Don't panic if there is no STATUS file for a while; it won't appear until at
    least one slurm task has finished.
       
-- launch romancal with **./RUN2_ALL_CAL.sh**; it will wait for RUN1_ALL_SIM.sh to finish.\
+- launch romancal with **./RUN2_ALL_CAL.sh**; it will wait for RUN1_ALL_SIM.sh to finish.
    Monitor status with STATUS_CAL.DAT
    
 - When all romancal jobs are done, make grand summary with **./RUN3_SUMMARY.sh**
@@ -46,7 +46,7 @@
    read GAIA+Synthetic stars from CSV file; this input is translated
    into required astropy format for romanisim. The MJDs in the
    transient sim determine the simulated MJDs, with optional
-   input MJD_RANGE cuts. Output includes\
+   input MJD_RANGE cuts. Output includes
     - L1 asdf file for each MJD in transient file
     - TRUTH table of overlaid objects in each L1 file;\
          id, ra, dec, x_det, y_det, n, label, flux_maggie, mag, mjd, band, sca
@@ -55,7 +55,7 @@
       **romanisim_snpit_wrapper.py --HELP**
    
 - **romancal_snpit_wrapper.py**\
-  read L1 file (or wildcard for list) and runs romancal to produce
+  read L1 file (or wildcard for list) and run romancal to produce
   L2 file for each L1. Beware that there is currently a sublte WCS
   problem in the L2 output, and a hacky fix is needed for campari
   and phrosty.
