@@ -7,11 +7,11 @@
       RA_WFI_CEN, DEC_WFI_CEN, ROLL\
    for each visit that is identified by an image number (IMGNUM). This pointing info
    is passed to romanisim for each MJD/IMGNUM. If there is no POINTING file, you can
-   hard wire a fixed RA,DEC,ROLL in the wrapper-config file (see below).\
+   hard wire a fixed RA,DEC,ROLL in the wrapper-config file (see below).
 
    To simulate only stars and/or galaxies, a manually created POINTING file is
    required to define a list of MJDs, since there are no transients to define
-   the MJDs.\
+   the MJDs.
    
    SNANA is not yet working on SMDC, so need to run this on another cluster
     
@@ -41,38 +41,38 @@
 
 ## Wrapper Descriptions:
 
-- ** romanisim_snpit_wrapper.py ** \
+- **romanisim_snpit_wrapper.py**\
    Read galaxies and transients from SNANA sim data folder, and
    read GAIA+Synthetic stars from CSV file; this input is translated
    into required astropy format for romanisim. The MJDs in the
    transient sim determine the simulated MJDs, with optional
-   input MJD_RANGE cuts. Output includes \
+   input MJD_RANGE cuts. Output includes\
     - L1 asdf file for each MJD in transient file
-    - TRUTH table of overlaid objects in each L1 file;
+    - TRUTH table of overlaid objects in each L1 file;\
          id, ra, dec, x_det, y_det, n, label, flux_maggie, mag, mjd, band, sca
 	 
-  For help on the input config file, \
-      ** romanisim_snpit_wrapper.py --HELP **
+  For help on the input config file,\
+      **romanisim_snpit_wrapper.py --HELP**
    
-- ** romancal_snpit_wrapper.py ** \
+- **romancal_snpit_wrapper.py**\
   read L1 file (or wildcard for list) and runs romancal to produce
   L2 file for each L1. Beware that there is currently a sublte WCS
   problem in the L2 output, and a hacky fix is needed for campari
   and phrosty.
 
 
-- ** sbatch_prep_romanisim+romancal.py ** \
+- **sbatch_prep_romanisim+romancal.py**\
   Read config file for romanisim_snpit_wrapper.py, and prepare slurm jobs
   (SMDC) for both romanisim_snpit_wrapper.py & romancal_snpit_wrapper.py.
   Also produces simple bash scripts to submit all of the jobs; see
   RUN*sh above in quic-start guide.
   The sbatch instructions are optionally included in the SBATCH_PREP
-  block of the config input for romanisim_snpit_wrapper.py. \
+  block of the config input for romanisim_snpit_wrapper.py.
 
-  This process includes monitor process that updates \
-      STATUS_SIM.DAT \
-      STATUS_CAL.DAT \
-  to show progress of slurm jobs. \
+  This process includes monitor process that updates\
+      STATUS_SIM.DAT\
+      STATUS_CAL.DAT\
+  to show progress of slurm jobs.
 
   For more help, see SBATCH_PREP block in  **romanisim_snpit_wrapper.py --HELP**
   
