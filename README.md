@@ -4,7 +4,7 @@
 
 - Simulate catalog-level transients with SNANA. The SIMLIB/cadence library used
   by SNANA should be synced with a POINTING file containing\
-  &nbsp;&nbsp;&nbsp;&nbsp;    RA_WFI_CEN, DEC_WFI_CEN, ROLL
+  &nbsp;&nbsp;&nbsp;&nbsp;    RA_WFI_CEN, DEC_WFI_CEN, ROLL\
   for each visit that is identified by an image number (IMGNUM). This pointing info
   is passed to romanisim for each MJD/IMGNUM. If there is no POINTING file, you can
   hard wire a fixed RA,DEC,ROLL in the wrapper-config file (see below).
@@ -17,7 +17,7 @@
     
 - Copy the SNANA HOSTLIB and output sim data folder to SMDC
 
-- Construct input config for the roman code wrappers using help from  
+- Construct input config for the roman code wrappers using help from\
    **romanisim_snpit_wrapper.py --HELP**
 
 - Prepare slurm jobs with\
@@ -25,7 +25,7 @@
         or\
     **sbatch_prep_romanisim+romancal.py --c sim_science.config -p**\
 
-- Launch romanisim jobs with  **./RUN1_ALL_SIM.sh**;
+- Launch romanisim jobs with  **./RUN1_ALL_SIM.sh**\
    monitor progress in STATUS_SIM.DAT, which includes WALLTIME and failure stats.
 
    Don't panic if there is no STATUS file for a while; it won't appear until at
